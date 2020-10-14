@@ -1,17 +1,12 @@
-// import * as dotenv from "dotenv";
-// require("dotenv").config();
-// const express = require("express");
-// const cors = require("cors");
-// const bodyParser = require("body-parser");
-// const mongoose = require("mongoose");
-// const Routes = require("./routes");
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import Routes from "./routes.js";
-// const MongoClient = require("mongodb").MongoClient;
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 if (!process.env.PORT) {
@@ -21,11 +16,41 @@ if (!process.env.PORT) {
 const PORT = process.env.PORT || 8080;
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: "GET,HEAD,POST,PATCH,DELETE,OPTIONS",
+  credentials: true, // required to pass
+  allowedHeaders: "Content-Type, X-Requested-With",
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  let { token } = req.cookies;
+  // if (!token) return res.status(403).send({ message: "No token provided." });
+  if (token) {
+    jwt.verify(token, process.env.APP_SECRET, (err, decoded) => {
+      if (decoded) {
+        req.email = decoded.email;
+      }
+    });
+  }
+  next();
+});
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 app.use(Routes);
 
-app.get("/", (req, res) => {
+app.get("/", (req, res, next) => {
   res.send("Welcome to the Information Manager");
 });
 

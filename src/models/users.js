@@ -4,28 +4,15 @@ import Bcrypt from "bcryptjs";
 
 const UserSchema = new Schema({
   name: {
-    first_name: {
-      type: String,
-      validate: {
-        validator: (v) => {
-          return /^[a-z]+$/i.test(v);
-        },
-        message: '"{VALUE}" is not a valid name!',
+    type: String,
+    validate: {
+      validator: (v) => {
+        return /^[a-z]+$/i.test(v);
       },
-      min: 3,
-      required: [true, "Firstname is required"],
+      message: '"{VALUE}" is not a valid name!',
     },
-    last_name: {
-      type: String,
-      validate: {
-        validator: (v) => {
-          return /^[a-z]+$/i.test(v);
-        },
-        message: '"{VALUE}" is not a valid name!',
-      },
-      min: 3,
-      required: [true, "Lastname is required"],
-    },
+    min: 3,
+    required: [true, "Username is required"],
   },
   email: {
     type: String,
