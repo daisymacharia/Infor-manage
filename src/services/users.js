@@ -105,6 +105,7 @@ function signout(req, res) {
 }
 
 function getUser(req, res) {
+  console.log(req);
   let email = req.email;
   if (!email) {
     return res.status(400).send({ data: "The user is not loggedIn" });
