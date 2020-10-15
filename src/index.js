@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 8080;
 
 const app = express();
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.REACT_APP_URL,
   methods: "GET,HEAD,POST,PATCH,DELETE,OPTIONS",
   credentials: true, // required to pass
   allowedHeaders: "Content-Type, X-Requested-With",
@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Origin", process.env.REACT_APP_URL);
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
@@ -68,11 +68,3 @@ mongoose
   .catch((error) => {
     throw error;
   });
-
-// const client = new MongoClient(uri, { useNewUrlParser: true });
-// client.connect((err) => {
-//   console.log("Connected successfully to server");
-//   const collection = client.db("information-manager").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
