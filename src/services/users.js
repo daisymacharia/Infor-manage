@@ -51,10 +51,7 @@ function register(req, res) {
         .then((item) => {
           let payload = { email: email, username: username };
 
-          let token = jwt.sign(payload, process.env.APP_SECRET, {
-            alg: "HS256",
-            expiresIn: 120,
-          });
+          let token = jwt.sign(payload, process.env.APP_SECRET, {});
           res.cookie("token", token, {
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
