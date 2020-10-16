@@ -75,7 +75,12 @@ function register(req, res) {
 }
 
 function signout(req, res) {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
+    secure: true,
+    sameSite: "None",
+  });
   res.status(200).send({
     message: "Goodbye!",
   });
