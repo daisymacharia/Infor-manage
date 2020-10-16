@@ -57,6 +57,8 @@ function register(req, res) {
           let token = jwt.sign(payload, process.env.APP_SECRET, {});
           res.cookie("token", token, {
             httpOnly: true,
+            secure: true,
+            sameSite: "None",
             maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
           });
           res.status(200).send({
@@ -70,36 +72,8 @@ function register(req, res) {
         });
     }
   );
-
-  // axios(
-  //   {
-  //     method: "POST",
-  //     url: "https://kitsu.io/api/edge/users",
-  //     headers: {
-  //       "Content-Type": "application/vnd.api+json",
-  //     },
-  //     body: {
-  //       data: {
-  //         type: "users",
-  //         attributes: {
-  //           name: first_name,
-  //           email: email,
-  //           password: password,
-  //         },
-  //       },
-  //     },
-  //   },
-  //   function (error, response, body) {
-  //     if (error) {
-  //       console.log(error);
-  //       res.status(400).send({ message: error.title });
-  //     }
-  //     console.log("Status:", response.statusCode);
-  //     console.log("Headers:", JSON.stringify(response.headers));
-  //     console.log("Response:", body);
-  //   }
-  // );
 }
+
 function signout(req, res) {
   res.clearCookie("token");
   res.status(200).send({
@@ -108,7 +82,6 @@ function signout(req, res) {
 }
 
 function getUser(req, res) {
-  console.log(req);
   let email = req.email;
   if (!email) {
     return res.status(400).send({ data: "The user is not loggedIn" });
