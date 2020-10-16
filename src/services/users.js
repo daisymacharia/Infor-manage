@@ -1,5 +1,6 @@
 // import axios from "axios";
 import jwt from "jsonwebtoken";
+import nodemon from "nodemon";
 import UserSchema from "../models/users.js";
 
 function login(req, res) {
@@ -18,7 +19,9 @@ function login(req, res) {
         let token = jwt.sign(payload, process.env.APP_SECRET, {});
 
         res.cookie("token", token, {
-          // httpOnly: true,
+          httpOnly: true,
+          sameSite: None,
+          Secure,
           maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
         });
         res.status(200).send({
@@ -53,7 +56,8 @@ function register(req, res) {
 
           let token = jwt.sign(payload, process.env.APP_SECRET, {});
           res.cookie("token", token, {
-            // httpOnly: true,
+            httpOnly: true,
+            sameSite: None,
             maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
           });
           res.status(200).send({
