@@ -20,9 +20,9 @@ function login(req, res) {
 
         res.cookie("token", token, {
           httpOnly: true,
-          sameSite: None,
-          Secure,
           maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
+          secure: true,
+          sameSite: "None",
         });
         res.status(200).send({
           data: { email },
@@ -57,7 +57,6 @@ function register(req, res) {
           let token = jwt.sign(payload, process.env.APP_SECRET, {});
           res.cookie("token", token, {
             httpOnly: true,
-            sameSite: None,
             maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
           });
           res.status(200).send({
